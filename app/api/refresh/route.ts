@@ -6,7 +6,7 @@ import { cookies } from 'next/headers';
 const JWT_SECRET = process.env.JWT_SECRET!;
 
 export async function POST(request: Request) {
-  const cookieStore = cookies(); // Obtener las cookies
+  const cookieStore = await cookies(); // Asegurar que es una promesa resuelta
   const refreshToken = cookieStore.get('refreshToken')?.value;
 
   if (!refreshToken) {
