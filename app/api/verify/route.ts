@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
+import { cookies } from 'next/headers';
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
 export async function POST(request: Request) {
-  const accessToken = request.cookies.get('accessToken')?.value;
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
 
   if (!accessToken) {
     return NextResponse.json(
