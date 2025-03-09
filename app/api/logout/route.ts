@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
+import { cookies } from 'next/headers';
 
 export async function POST(request: Request) {
-  const refreshToken = request.cookies.get('refreshToken')?.value;
+  const cookieStore = cookies();
+  const refreshToken = cookieStore.get('refreshToken')?.value;
 
   if (!refreshToken) {
     return NextResponse.json(
@@ -25,8 +27,8 @@ export async function POST(request: Request) {
     );
 
     // Eliminar las cookies del cliente
-    response.cookies.delete('accessToken');
-    response.cookies.delete('refreshToken');
+    response.cookies.set('accessToken', '', { maxAge: 0 });
+    response.cookies.set('refreshToken', '', { maxAge: 0 });
 
     return response;
   } catch (error) {
