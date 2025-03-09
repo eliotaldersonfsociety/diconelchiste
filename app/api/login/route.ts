@@ -31,7 +31,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const userPassword = user.rows[0].password;
+    const userPassword = String(user.rows[0].password);
 
     if (!userPassword) {
       return NextResponse.json(
