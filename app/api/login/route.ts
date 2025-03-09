@@ -31,7 +31,16 @@ export async function POST(request: Request) {
       );
     }
 
-    const isValidPassword = await bcrypt.compare(password, user.rows[0].password);
+    const userPassword = user.rows[0].password;
+
+    if (!userPassword) {
+      return NextResponse.json(
+        { message: 'Contraseña no válida' },
+        { status: 400 }
+      );
+    }
+
+    const isValidPassword = await bcrypt.compare(password, userPassword);
 
     if (!isValidPassword) {
       return NextResponse.json(
